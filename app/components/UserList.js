@@ -1,6 +1,5 @@
 import React from 'react';
 import User from './User.js';
-import UserSearch from './UserSearch.js';
 import ReactMixin from 'react-mixin';
 import ReactFireMixin from 'reactfire';
 
@@ -9,8 +8,13 @@ export default class UserList extends React.Component {
         super();
 
         this.state = {
-            users: []
+            users: [],
+            search: ''
         }
+    }
+
+   _userSearch(event){
+       this.setState({search: event.target.value.substr(0, 20)});
     }
 
     componentDidMount() {
@@ -18,12 +22,22 @@ export default class UserList extends React.Component {
     }
 
     render() {
+        let filteredUsers = this.state.users.filter(
+            (user) => {
+                return user.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+            }
+        );
+
         return (
             <div className="user-list" id="user-list">
-                <UserSearch />
+                <div className="search">
+                    <input type="text" placeholder="search" value={this.state.search} onChange={this._userSearch.bind(this)}/>
+                    <i className="fa fa-search"></i>
+                </div>
+
                 <ul className="list">
                 {
-                    this.state.users.map((user,index) => {
+                    filteredUsers.map((user,index) => {
                        return <User key={index} img={user.img} name={user.name} status={user.status} id={user['.key']}  />
                     })
 

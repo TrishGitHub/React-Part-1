@@ -38,6 +38,7 @@ i.fa.fa-search {
     position: absolute;
     top: 45%;
     right: 10%;
+    cursor: pointer;
 }
 
 .list {
